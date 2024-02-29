@@ -1,0 +1,44 @@
+import "./assets/scss/all.scss";
+import "/node_modules/bootstrap/dist/js/bootstrap.min";
+
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+
+import * as bootstrap from "bootstrap";
+// 引入 VeeValidate 元件跟功能
+import {
+    Field, Form, ErrorMessage, defineRule, configure,
+} from 'vee-validate';
+import * as AllRules  from '@vee-validate/rules';
+import { localize, setLocale } from '@vee-validate/i18n';
+import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
+
+
+import App from "./App.vue";
+import router from "./router";
+
+import axios from "axios";
+import VueAxios from "vue-axios";
+
+
+Object.keys(AllRules).forEach((rule) => {
+    defineRule(rule, AllRules[rule]);
+});
+
+// 將當前 VeeValidate 的語系設定為繁體中文
+configure({
+    generateMessage: localize({ zh_TW: zhTW }),
+    validateOnInput: true,
+});
+setLocale('zh_TW');
+
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+app.use(VueAxios, axios);
+app.component('VField', Field);
+app.component('VForm', Form);
+app.component('ErrorMessage', ErrorMessage)
+
+app.mount("#app");
