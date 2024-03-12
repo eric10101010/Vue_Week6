@@ -2,28 +2,36 @@
     <nav class="bg-primary d-flex justify-content-between align-items-center py-3">
         <ul class="header d-flex list-unstyled mt-3">
             <li class="mx-3 headerItem">
-                <RouterLink to="/" class="text-white text-decoration-none h3">首頁</RouterLink>
+                <routerLink to="/" class="text-white text-decoration-none h3">首頁</routerLink>
             </li>
             <li class="me-3 headerItem">
-                <RouterLink to="/about" class="text-white text-decoration-none h3">關於我們</RouterLink> 
+                <routerLink to="/about" class="text-white text-decoration-none h3">關於我們</routerLink> 
             </li>
             <li class="me-3 headerItem">
-                <RouterLink to="/products" class="text-white text-decoration-none h3">產品列表</RouterLink> 
+                <routerLink to="/products" class="text-white text-decoration-none h3">產品列表</routerLink> 
             </li>
             <li class="me-3 headerItem">
-                <RouterLink to="/cart" class="text-white text-decoration-none h3">購物車</RouterLink>
+                <routerLink to="/contact" class="text-white text-decoration-none h3">聯絡資訊</routerLink>
             </li>
         </ul>
-        <ul class="me-3 list-unstyled mt-3">
-            <li class="headerItem">
-                <RouterLink to="/login" class="text-white text-decoration-none h3">登入頁</RouterLink>
+        <ul class="me-3 list-unstyled mt-3 d-flex">
+            <li class="headerItem me-4">
+                <routerLink to="/login" class="text-white text-decoration-none h3">登入頁</routerLink>
+            </li>
+            <li class="position-relative"> 
+                <!-- 購物車 -->
+                <router-link to="/cart" class="nav-link text-decoration-none">
+                    <i class="bi bi-cart-fill text-white" style="font-size: 1.5rem;"></i>
+                    <span class="rounded-pill bg-danger text-white position-absolute px-2"
+                        style="right: -12px; top: -6px;">
+                        {{ this.carts?.length }}
+                    </span>
+                </router-link>
             </li>
         </ul>
-
     </nav>
     <RouterView></RouterView>
 </template>
-
 
 <style lang="scss">
     .header {
@@ -35,3 +43,21 @@
         }
     }
 </style>
+
+<script>
+import "../../node_modules/bootstrap-icons/font/bootstrap-icons.json";
+import { mapActions, mapState } from 'pinia';
+import cartStore from '../store/cartStore';
+
+    export default {
+        computed: {
+            ...mapState(cartStore, ['carts']),
+        },
+        methods: {
+            ...mapActions(cartStore, ['getCart']),
+        },
+        mounted() {
+            this.getCart();
+        }
+    }
+</script>

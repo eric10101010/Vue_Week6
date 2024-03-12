@@ -19,21 +19,45 @@ const router = createRouter({
           component: () => import('../view/AboutView.vue'),
         },
         {
+          path: 'contact',
+          name: 'Contact',
+          component: () => import('../view/ContactView.vue'),
+        },
+        {
           path: 'products',
           name: 'Products',
           component: () => import('../view/ProductsView.vue'),
+        },
+        {
+          path: 'product/:id',
+          name: 'Product',
+          component: () => import('../view/ProductDetail.vue'),
         },
         {
           path: 'cart',
           name: 'Cart',
           component: () => import('../view/CartView.vue'),
         },
+        {
+          path: 'checkorder',
+          name: 'CheckOrder',
+          component: () => import('../view/CheckOrder.vue'),
+        },
+        {
+          path: 'paidorder/:id',
+          name: 'PaidOrder',
+          component: () => import('../view/PaidOrder.vue'),
+        },
       ],
     },
     //登入頁
     {
       path: '/login',
-      component: () => import('../view/LoginView.vue'),
+      component: () => import('../view/login/LoginView.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: () => import('../view/login/404.vue'),
     },
     //後台
     {

@@ -1,289 +1,158 @@
 <template>
-    <div class="container">
+    <BannerTop :subject-tilte="subjectTilte" :back-list="backList"></BannerTop>
+    <div>
         <loading v-model:active="isLoading">
             <div class="loadingio-spinner-spin-pqarappzpn"><div class="ldio-eviqoo58lam">
             <div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div>
             </div></div>
         </loading>
-        <div class="mt-4">
-        <!-- 種類側欄 -->
-            <div class="col-lg-3 col-md-3 col-12 mb-4 mb-md-0">
-                <ul class="side-bar list-group">
-                    <li class="list-group-item border border-third" v-for="(item, key, index) of category" :key="index"
-                        :class="{ 'active': choose === key }" @click="catelogClick(key)">
-                        <p class="text-center mb-0">{{ key }}（{{ item }}）</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-9 col-md-9 col-12">
-                <ul class="row list-unstyled">
-                    <li class="col-12 col-md-6 col-lg-4 mb-5 px-2" v-for="product in products" :key="product.id" >
-                        <!-- 產品容器 -->
-                        <div class="productList card">
-                            <!-- 1.分類tag -->
-                            <span class="badge bg-primary text-white">
-                                {{ product.category }}
-                            </span>
-                            <!-- 2.產品圖片 -->
-                            <div class="productPhoto">
-                                <div
-                                style="
-                                height: 100px;
-                                background-size: cover;
-                                background-position: center;
-                                "
-                                :style="{
-                                    backgroundImage : `url(${product.imageUrl})`
-                                }"
-                            ></div>
-                            </div>
-                            <div class="card-body">
-                                <!-- 4.產品名稱 -->
-                                <div class="product-title">
-                                    <h5 class="text-center mb-2 fw-bolder" style="font-size:22px">
-                                        {{ product.title }}
-                                    </h5>
+        <div class="container">
+            <div class="row mt-6">
+                <!-- 種類側欄 -->
+                <div class="col-3 mb-4 mb-md-0">
+                    <ul class="productsSide list-group list-unstyled">
+                        <li class="productsSideItem list-group-item border border-third d-flex justify-content-center align-items-center" :class="{active: isActive === 1}"  @click="changeClick(1)">
+                            <router-link :to="`/products`" class="text-decoration-none">
+                                全部商品
+                            </router-link>
+                        </li>
+                        <li class="productsSideItem list-group-item border border-third d-flex justify-content-center aalign-items-center" v-for="(item) in categories" :key="item" :class="{active: isActive === item}" @click="changeClick(item)">
+                            <router-link :to="`/products?category=${item}`" class="text-decoration-none">
+                                {{ item }} 
+                            </router-link>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-9">
+                    <div class="row list-unstyled">
+                        <div class="col-4 mb-5 px-2" v-for="(product, index) in productsList" :key="product.id">
+                            <!-- 產品容器 -->
+                            <div class="productsList border border border-third rounded-2" v-if="index <= 5">
+                                <!-- 1.產品圖片 -->
+                                <div class="productsPhoto position-relative">
+                                    <router-link :to="`/product/${product.id}`">
+                                        <img :src="product.imageUrl" alt="productsPhoto" class="rounded-top">
+                                    </router-link>
+                                    <!-- 2.分類tag -->
+                                    <span class="px-2 py-2 badge bg-primary text-white position-absolute top-0 start-0">
+                                        {{ product.category }}
+                                    </span>
+                                    <!-- <div style="height: 100px; background-size: cover; background-position: center;" 
+                                        :style="{ backgroundImage : `url(${product.imageUrl})`}">
+                                    </div> -->
                                 </div>
-                                <!-- 5.價錢+購物車 -->
-                                <div class="cart-box">
-                                    <ul class="d-flex justify-content-center align-items-center">
-                                        <li class="text-third text-decoration-line-through " style="font-size:14px">
-                                            NT {{ product.origin_price }}
-                                        </li>
-                                        <li class="text-danger fw-bolder px-3" style="font-size:20px">
-                                            NT {{ product.price }}
-                                        </li>
-                                    </ul>
-                                    <div class="add-btn mt-2 text-center d-flex align-items-center justify-content-center ">
-                                        <button class="bg-secondary px-5" style="font-size:20px">
-                                            <span class="text-light"><i class="bi bi-cart pe-3"></i>加入購物車</span>
-                                        </button>
-                                    </div>
-                                </div>
+                                <ul class="list-unstyled mb-0">
+                                    <!-- 3.產品名稱 -->
+                                    <li class="productsTitle">
+                                        <h5 class="text-center my-3 fw-bolder" style="font-size:22px">
+                                            {{ product.title }}
+                                        </h5>
+                                    </li>
+                                    <!-- 4.價錢+購物車 -->
+                                    <li class="productsCart">
+                                        <ul class="d-flex justify-content-center align-items-center list-unstyled">
+                                            <li class="text-third text-decoration-line-through " style="font-size:14px">
+                                                NT$ {{ product.origin_price }}
+                                            </li>
+                                            <li class="text-dark fw-bolder px-3" style="font-size:20px">
+                                                NT$ {{ product.price }}
+                                            </li>
+                                        </ul>
+                                        <hr>
+                                        <div class="d-flex justify-content-around pb-3">
+                                            <button type="button" class="btn btn-primary">
+                                                <routerLink :to="`/product/${product.id}`" class="text-decoration-none text-white">
+                                                    查看更多
+                                                </routerLink>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger" 
+                                                    :disabled="product.id === status.addCartLoading"
+                                                    @click.prevent="addCart(product.id)">
+                                                <span class="spinner-border spinner-border-sm text-danger" role="status" v-if="product.id === status.addCartLoading"></span>
+                                                    加入購物車
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-
-                    </li>
-                </ul>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <Pagination :pages="pages" @emit-pages="getProducts"></Pagination>
+                    </div>
+                </div>
             </div>
-            <!-- <table class="table align-middle">
-                <thead>
-                    <tr>
-                        <th>圖片</th>
-                        <th>商品名稱</th>
-                        <th>價格</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="product in products" :key="product.id">
-                        <td style="width: 200px">
-                            <div
-                                style="
-                                height: 100px;
-                                background-size: cover;
-                                background-position: center;
-                                "
-                                :style="{
-                                    backgroundImage : `url(${product.imageUrl})`
-                                }"
-                            ></div>
-                        </td>
-                        <td>{{ product.title }}</td>
-                        <td>
-                            <div class="h5" v-if="product.origin_price === product.price">{{ product.price }} 元</div>
-                            <div class="div" v-else>
-                                <del class="h6">原價 {{ product.original_price }} 元</del>
-                                <div class="h5">現在只要 {{ product.price }} 元</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                <button type="button" class="btn btn-outline-secondary" @click="openModal(product)">
-                                    <i class="fas fa-spinner fa-pulse"></i>
-                                    查看更多
-                                </button>
-                                <button type="button" class="btn btn-outline-danger" 
-                                :disabled="product.id === status.addCartLoading"
-                                @click="addCart(product.id)">
-                                <span class="spinner-border spinner-border-sm text-danger" role="status" v-if="product.id === status.addCartLoading">
-                                </span>
-                                    加到購物車
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> -->
         </div>
     </div>
-    <ProductModal :temp-product="tempProduct" :add-cart="addCart" ref="ProductModal"></ProductModal>
 </template>
 
 <script>
 
 import axios from 'axios';
-import ProductModal from '../components/ProductModal.vue';
+import { mapActions, mapState } from 'pinia';
+import cartStore from '../store/cartStore';
+import Pagination from '../components/Pagination.vue';
+import BannerTop from '../components/BannerTop.vue';
+import BreadCrumb from '../components/BreadCrumb.vue';
 import Loading from 'vue-loading-overlay';
 import Swal from 'sweetalert2';
 
 const { VITE_API, VITE_PATH } = import.meta.env
 
-
 export default {
     data() {
         return {
-            products: [],
+            productsList: [],
             tempProduct: {},
-            carts: {},
+            categories: ['有線耳機','藍芽耳機','有線耳罩','藍芽耳罩'],
             isLoading: false,
-            category: {},
-            form: {
-                user: {
-                    name: '',
-                    email: '',
-                    tel: '',
-                    address: '',
-                },
-                message: '',
-            },
+            isActive: 1,
+            pages: {},
             status: {
                 addCartLoading: '',
                 cartQtyLoading: ''
-            }
+            },
+            subjectTilte: '商品列表',
+            breadcrumbName:'商品列表',
+            backList:  'https://plus.unsplash.com/premium_photo-1709311438052-9c3f5f867b9a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4NHx8fGVufDB8fHx8fA%3D%3D',
         }
     },
+    computed:{
+        ...mapState(cartStore, ['carts']),
+        ...mapState(cartStore, ['status.addCartLoading']),
+        ...mapState(cartStore, ['status.cartQtyLoading']),
+    },
     methods: {
-        calculateCategories () {
-            this.category['全部商品'] = this.products.length
-            this.products.forEach(item => {
-                const cate = item.category
-                    if (!(cate in this.category)) {
-                        this.category[cate] = 1
-                    } else {
-                        this.category[cate]++
-                    }
+        ...mapActions(cartStore, ['getCart']),
+        ...mapActions(cartStore, ['addCart']),
+        changeClick(i) {
+            this.isActive =i;
+        },
+        getProducts(page = 1) {
+            const { category= '' } = this.$route.query;
+            const api =`${VITE_API}/api/${VITE_PATH}/products?category=${category}&page=${page}`;
+            let vm = this;
+            axios.get(api)
+            .then(res => {
+                vm.isLoading = false;
+                this.productsList = res.data.products;
+                this.currentPage = page;
+                this.pages = res.data.pagination;
+                // console.log(this.pages);
             })
-            console.log(this.category)
+            .catch(err => {
+                console.dir(err);
+            })
         },
-        catelogClick (key) {
-            this.choose = key
-            console.log(this.filterProducts)
-        },
-        getProducts() {
-            const api =`${VITE_API}/api/${VITE_PATH}/products/all`;
-            const vm = this;
-            vm.isLoading = true;
+        getProduct () {
+            const ID = this.$route.params.id
+            const api =`${VITE_API}/api/${VITE_PATH}/product/${ID}`;
                 axios.get(api)
                     .then(res => {
-                        this.products = res.data.products;
-                        vm.isLoading = false;
-                        this.calculateCategories();
-                        // console.log(res.data);
+                        console.log(res)
+                        this.product = res.data.product
                     })
-                    .catch(err => {
-                        console.log(err.response.data);
-                    })
-        },
-        openModal(product) {
-            this.tempProduct = product;
-            console.log(product);
-            this.$refs.ProductModal.openModal();
-        },
-        addCart(product_id, qty = 1) {
-            const order = {
-                product_id,
-                qty,
-            };
-            this.status.addCartLoading = product_id;
-            const api =`${VITE_API}/api/${VITE_PATH}/cart`;
-                axios.post(api, {data: order})
-                    .then(res => {
-                        const name = res.data.data.product.title;
-                        this.status.addCartLoading = '';
-                        Swal.fire({
-                                title: `成功加入 ${name} 到購物車`,
-                                icon: 'success',
-                                confirmButtonText: '確認'
-                        })
-                        this.getCart();
-                        this.$refs.ProductModal.hideModal();
-                    })
-                    .catch(err => {
-                        console.log(err.res.data);
-                        Swal.fire({
-                                title: `加入購物車失敗`,
-                                icon: 'error',
-                                confirmButtonText: '確認'
-                        })
-                    });
-        },
-        getCart() {
-            const api =`${VITE_API}/api/${VITE_PATH}/cart`;
-                axios.get(api)
-                    .then(res => {
-                        this.carts = res.data.data;
-                        // console.log(this.carts.carts);
-                    })
-                    .catch(err => {
-                        console.log(err.response.data);
-                    });
-        },
-        editCart(item, qty = 1) {
-            const order = {
-                product_id: item.product.id,
-                qty,
-            };
-            this.status.cartQtyLoading = item.id;
-            const api =`${VITE_API}/api/${VITE_PATH}/cart/${item.id}`;
-                axios.put(api, {data: order})
-                    .then(res => {
-                        // console.log(res);
-                        this.status.cartQtyLoading = '';
-                        this.getCart();
-                    })
-                    .catch(err => {
-                        console.log(err.response.data);
-                    });
-        },
-        delCartItem(id) {
-            this.status.cartQtyLoading = id;
-            const api =`${VITE_API}/api/${VITE_PATH}/cart/${id}`;
-                axios.delete(api)
-                    .then(res => {
-                        let message = res.data.message;
-                        this.status.cartQtyLoading = '';
-                        Swal.fire({
-                                title: `商品${message}`,
-                                icon: 'success',
-                                confirmButtonText: '確認'
-                        })
-                        this.getCart();
-                    })
-                    .catch(err => {
-                        console.log(err.response.data);
-                        Swal.fire({
-                                title: `刪除失敗`,
-                                icon: 'error',
-                                confirmButtonText: '確認'
-                        })
-                    });
-        },
-        delCartAll() {
-            const api =`${VITE_API}/api/${VITE_PATH}/carts`;
-                axios.delete(api)
-                    .then(res => {
-                        // console.log(res);
-                        Swal.fire({
-                                title: `成功清空購物車`,
-                                icon: 'success',
-                                confirmButtonText: '確認'
-                        })
-                        this.getCart();
-                    })
-                    .catch(err => {
-                        console.log(err.response.data);
-                    });
+                    .catch(err => console.log(err))
         },
         createOrder() {
             // this.isLoading = true;
@@ -304,15 +173,19 @@ export default {
         }
     },
     components: {
-        ProductModal,
+        Pagination,
+        BannerTop,
+        BreadCrumb,
         Loading,
         Swal
     },
-    computed: {
-        checkData() {
-            const attrs = ['name', 'email', 'tel', 'address'];
-            return attrs.every((item) => this.form.user[item] !== '');
-        },
+    watch: { 
+        '$route.query' : {
+            handler() {
+                this.getProducts();
+            },
+            deep: true,
+        }
     },
     mounted() {
         this.getProducts();
@@ -321,7 +194,29 @@ export default {
 }
 </script>
 
-<style type="text/css">
+<style lang="scss">
+    .active {
+        background-color: green;
+        a {
+            color: #FFF;
+        }
+    }
+    .products {
+        &Photo {
+            cursor: pointer;
+            overflow: hidden;
+            :hover {
+                    transform: scale(1.1);
+                    transition: all .8s ease;
+                }
+            img {
+                max-width: 100%;
+                height: 180px;
+                object-fit: cover;
+
+            }
+        }
+    }
     @keyframes ldio-eviqoo58lam {
         0% {
             opacity: 1;
