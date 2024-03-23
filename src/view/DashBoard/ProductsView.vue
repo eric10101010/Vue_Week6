@@ -68,8 +68,6 @@ import Pagination from '../../components/Pagination.vue';
 import ProductModal from '../../components/ProductModal.vue';
 import DelProductModal from '../../components/DelProductModal.vue';
 
-
-
 const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
@@ -201,7 +199,6 @@ export default {
                         content: '商品資料未輸入，請重新確認商品資料',
                     });
                 }
-
             })
         },
         //存入已有資料
@@ -239,8 +236,6 @@ export default {
     }
 }
 </script>
-
-
 
 <style lang="scss" scoped>
     @keyframes ldio-eviqoo58lam {
