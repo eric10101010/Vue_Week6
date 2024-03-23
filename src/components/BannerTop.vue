@@ -17,6 +17,7 @@
             background-color: #ccc;
             background-size: cover;
             &Box {
+                font-family: 'GenSenRounded';
                 background-color: rgba(0, 0, 0, 0.7);
             }
         }

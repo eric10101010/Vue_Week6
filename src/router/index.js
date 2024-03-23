@@ -6,58 +6,58 @@ const router = createRouter({
     //前台
     {
       path: '/',
-      component: () => import('../view/FrontView.vue'),
+      component: () => import('../view/Front/FrontView.vue'),
       children: [
         {
           path: '',
           name: 'Home',
-          component: () => import('../view/HomeView.vue'),
+          component: () => import('../view/Front/HomeView.vue'),
         },
         {
           path: 'about',
           name: 'About',
-          component: () => import('../view/AboutView.vue'),
+          component: () => import('../view/Front/AboutView.vue'),
         },
         {
           path: 'contact',
           name: 'Contact',
-          component: () => import('../view/ContactView.vue'),
+          component: () => import('../view/Front/ContactView.vue'),
         },
         {
           path: 'products',
           name: 'Products',
-          component: () => import('../view/ProductsView.vue'),
+          component: () => import('../view/Front/ProductsView.vue'),
         },
         {
           path: 'product/:id',
           name: 'Product',
-          component: () => import('../view/ProductDetail.vue'),
+          component: () => import('../view/Front/ProductDetail.vue'),
         },
         {
           path: 'cart',
           name: 'Cart',
-          component: () => import('../view/CartView.vue'),
+          component: () => import('../view/Front/CartView.vue'),
         },
         {
           path: 'checkorder',
           name: 'CheckOrder',
-          component: () => import('../view/CheckOrder.vue'),
+          component: () => import('../view/Front/CheckOrder.vue'),
         },
         {
           path: 'paidorder/:id',
           name: 'PaidOrder',
-          component: () => import('../view/PaidOrder.vue'),
+          component: () => import('../view/Front/PaidOrder.vue'),
         },
       ],
     },
     //登入頁
     {
       path: '/login',
-      component: () => import('../view/login/LoginView.vue'),
+      component: () => import('../view/Login/LoginView.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
-      component: () => import('../view/login/404.vue'),
+      component: () => import('../view/Login/404.vue'),
     },
     //後台
     {
@@ -71,6 +71,10 @@ const router = createRouter({
         {
           path: 'order',
           component: () => import('../view/DashBoard/OrderView.vue'),
+        },
+        {
+          path: 'coupon',
+          component: () => import('../view/DashBoard/CouponView.vue'),
         }
       ],
     },

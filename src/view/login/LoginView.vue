@@ -1,4 +1,5 @@
 <template>
+    <ToastMessages></ToastMessages>
     <div class="login vh-100 d-flex justify-content-center align-items-center">
         <div class="loginBox col-xl-6 col-md-6 col-10 text-white p-4 rounded-3">
             <h2 class="text-center">後台資料管理</h2>
@@ -23,13 +24,17 @@
                 </div>
             </VeeForm>
         </div>
-        </div>
+    </div>
 </template>
 
 
 
 <script>
-import axios from "axios"
+import axios from "axios";
+import { mapActions } from 'pinia';
+import { useToastMessageStore } from "../../stores/toastMessage";
+import ToastMessages from '../../components/ToastMessages.vue';
+
 
 const { VITE_API } = import.meta.env
 
@@ -43,21 +48,30 @@ export default {
         };
     },
     methods: {
+        ...mapActions(useToastMessageStore, ['pushMessage']),
         userLogin() {
             axios.post(`${VITE_API}/admin/signin`, this.user)
                 .then(res => {
                     const { token, expired } = res.data;
                     document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
                     this.$router.push('admin/products');
-                    alert('恭喜～成功登入');
+                    // alert('恭喜～成功登入');
+
                     this.$router.push('/admin/products')
                 })
                 .catch(err => {
-                    alert('失敗，請確認再次輸入正確密碼');
-                    console.dir(err.response.data);
+                    this.pushMessage({
+                        style: 'danger',
+                        title: '登入失敗',
+                        content: '請重新確認密碼再登入',
+                    })
+                    console.dir(err.response.data.message);
                 })
         }
-    }
+    },
+    components: {
+        ToastMessages,
+    },
 }
 </script>
 

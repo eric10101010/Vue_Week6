@@ -1,10 +1,11 @@
 import "./assets/scss/all.scss";
 import "/node_modules/bootstrap/dist/js/bootstrap.min";
-
+import "./assets/font/fonts.css";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 
 import * as bootstrap from "bootstrap";
+import $ from 'jquery';
 // 引入 VeeValidate 元件跟功能
 import {
     Field, Form, ErrorMessage, defineRule, configure,
@@ -12,6 +13,7 @@ import {
 import * as AllRules  from '@vee-validate/rules';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
+import { date, currency } from '../src/components/methods/filter';
 
 import App from "./App.vue";
 import router from "./router";
@@ -32,8 +34,12 @@ configure({
     validateOnInput: true,
 });
 setLocale('zh_TW');
-
+window.$ = $;
 const app = createApp(App);
+app.config.globalProperties.$filters = {
+    date,
+    currency,
+};
 
 app.use(createPinia());
 app.use(router);

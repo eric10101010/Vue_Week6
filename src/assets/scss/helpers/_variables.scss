@@ -298,14 +298,15 @@ $cyans: (
 // fusv-enable
 
 // scss-docs-start theme-color-variables
-$primary:       #3fb984 !default;
-$secondary:     $gray-600 !default;
+$primary:       #11235A !default;
+$secondary:     #596FB7 !default;
 $success:       $green !default;
-$info:          $cyan !default;
+$info:          #9EB8D9 !default;
 $warning:       $yellow !default;
 $danger:        $red !default;
-$light:         $gray-100 !default;
-$dark:          $gray-900 !default;
+$light:         #FBF2F2 !default;
+$dark:          #000000 !default;
+$gray:          #F1EFEF !default;
 // scss-docs-end theme-color-variables
 
 // scss-docs-start theme-colors-map
@@ -414,8 +415,10 @@ $spacers: (
   2: $spacer * .5,
   3: $spacer,
   4: $spacer * 1.5,
-  5: $spacer * 3,
-  6: $spacer * 4,
+  5: $spacer * 2,
+  6: $spacer * 2.5,
+  7: $spacer * 3,
+  8: $spacer * 4,
 ) !default;
 // scss-docs-end spacer-variables-maps
 
@@ -1746,3 +1749,4 @@ $kbd-bg:                            var(--#{$prefix}body-color) !default;
 $nested-kbd-font-weight:            null !default; // Deprecated in v5.2.0, removing in v6
 
 $pre-color:                         null !default;
+

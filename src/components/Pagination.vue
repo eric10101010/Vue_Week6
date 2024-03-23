@@ -1,6 +1,6 @@
 <template>
     <nav aria-label="Page navigation example">
-        <ul class="pagination">
+        <ul class="pagination mt-lg-4 mt-md-4 mt-3 mb-5">
             <li class="page-item" :class="{ disabled: !pages.has_pre }">
                 <a class="page-link" aria-label="Previous" @click.prevent="updatePage(pages.current_page -1)">
                     <span aria-hidden="true">&laquo;</span>
@@ -34,3 +34,10 @@ export default {
 };
 </script>
 
+<style lang="scss" scoped>
+.page-item.active .page-link {
+    background-color: #596FB7 !important; 
+    border-color: #596FB7 !important;
+}
+
+</style>
